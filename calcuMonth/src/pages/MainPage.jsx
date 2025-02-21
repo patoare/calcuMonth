@@ -1,12 +1,19 @@
 import { useState } from 'react'
 import '../App.css'
+import { useLocation, useNavigate } from 'react-router-dom';
 
 function MainPage() {
   const [totals, setTotals] = useState([0, 0, 0, 0, 0]);
-  const [inputs, setInputs] = useState([0, 0, 0, 0, 0]);
-  const [generalTotal, setGeneralToatal] = useState(0);
+  const [inputs, setInputs] = useState(["", "", "", "", "" ]);
+  const [generalTotal, setGeneralTotal] = useState(0);
+  const location = useLocation();
+  const navigate = useNavigate();
+  const formData = location.state;
 
-  const categoryValues = [1, 2, 3, 4, 5];
+  
+  if (!formData) {
+    return <h2>No hay datos. Completa el formulario primero.</h2>;
+  }
 
   const handleInputChange = (index, value) => {
     const updatedInputs = [...inputs];
@@ -18,10 +25,10 @@ function MainPage() {
     const updatedTotals = [...totals];
     updatedTotals[index] += inputs[index];
     setTotals(updatedTotals);
-    setGeneralToatal(generalTotal + inputs[index]);
+    setGeneralTotal(generalTotal + inputs[index]);
   
   const updatedInputs = [...inputs];
-  updatedInputs[index] = 0;
+  updatedInputs[index] ="";
   setInputs(updatedInputs)
 
 };
@@ -29,22 +36,22 @@ function MainPage() {
 return (
   <>
     <div className="title">
-      <h1>Current Month</h1>
+      <h1>{formData.month}</h1>
     </div>
     <div className="tabla">
       <table>
         <tbody>
           <tr className="fila">
-            <th className="categoria">Supermercado</th>
-            <th className="categoria">Salidas</th>
-            <th className="categoria">Transporte</th>
-            <th className="categoria">Gastos Bachi</th>
-            <th className="categoria">Gastos Ticio</th>
+            <th className="categoria">{formData.categoria1}</th>
+            <th className="categoria">{formData.categoria2}</th>
+            <th className="categoria">{formData.categoria3}</th>
+            <th className="categoria">{formData.categoria4}</th>
+            <th className="categoria">{formData.categoria5}</th>
           </tr>
           <tr className="fila">
             {inputs.map((inputValue, index) => (
               <th key={index} className="categoria">
-                
+
                 <input className='inputStyle'
                   type="number"
                   value={inputValue}
